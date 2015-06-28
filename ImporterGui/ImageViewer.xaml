@@ -1,0 +1,40 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ImporterGui"
+      xmlns:ViewModels="clr-namespace:ImporterGui.ViewModels" xmlns:ValueConverters="clr-namespace:ImporterGui.ValueConverters" x:Class="ImporterGui.ImageViewer"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="600"
+      Title="ImageViewer" KeyUp="ImageViewer_KeyUp" Focusable="True">
+    <Page.Resources>
+        <ValueConverters:VisibilityConverter x:Key="VisibilityConverter"/>
+        <ValueConverters:IndexValueConverter x:Key="IndexValueConverter"/>
+    </Page.Resources>
+    <Page.DataContext>
+        <ViewModels:ImageViewerViewModel/>
+    </Page.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Row="0" Grid.ColumnSpan="2" Source="{Binding ShownImage}" />
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
+            <Button x:Name="ButtonPrevious" Width="100" Content="&lt; Previous" Margin="0 0 20 0" IsEnabled="{Binding HasPreviousImage, Mode=OneWay}"/>
+            <Label Content="{Binding CurrentImageIndex, Converter={StaticResource IndexValueConverter}, Mode=OneWay}"/>
+            <Label Content="Of"/>
+            <Label Content="{Binding ImageCount, Mode=OneWay}"/>
+            <Button x:Name="ButtonNext" Width="100" Content="Next &gt;" Margin="20 0 0 0" IsEnabled="{Binding HasNextImage, Mode=OneWay}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
+            <Button x:Name="ButtonKeep" Margin="0" Padding="15,0" Visibility="{Binding IsKept, ConverterParameter=inverted, Converter={StaticResource VisibilityConverter}}">Keep</Button>
+            <Button x:Name="ButtonUnkeep" Padding="10,0" Visibility="{Binding IsKept, Converter={StaticResource VisibilityConverter}}">Unkeep</Button>
+        </StackPanel>
+    </Grid>
+</Page>
